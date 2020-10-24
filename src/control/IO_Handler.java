@@ -34,6 +34,17 @@ public class IO_Handler
 							//System.out.println(currLine);
 							String[] nodeStr = currLine.split("\\s+");
 							System.out.println("From: " + nodeStr[0] + "\tTo: " + nodeStr[1]);
+							// can store nodes and edges into graph data structure here after initialization
+						}
+						else
+						{
+							if(currLine.contains("Nodes:"))
+							{
+								currLine = currLine.replaceAll("[^\\d]", " ").trim();
+								int numNodes = Integer.parseInt(currLine.split(" ")[0]);
+								System.out.println("No. of nodes: " + numNodes);
+								// can initialize the graph data structure using numNodes here
+							}
 						}
 					}
 					break;
