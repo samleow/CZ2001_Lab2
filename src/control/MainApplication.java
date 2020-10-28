@@ -21,7 +21,7 @@ public class MainApplication
 		{
 			System.out.println(i);
 			Iterator<Integer> j = g.list[i].listIterator();
-			if(shortestPath[i] == null && j.hasNext())
+			if(shortestPath[i] == null && j.hasNext() && !hospital[i])
 				BFS(i, g);
 		}
 		
