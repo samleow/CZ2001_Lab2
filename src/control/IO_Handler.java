@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import entity.Graph;
+
 enum FileType
 {
 	GRAPH,
@@ -25,6 +27,7 @@ public class IO_Handler
 			switch(type)
 			{
 				case GRAPH:
+					Graph g = new Graph(-1);
 					while(fileSc.hasNextLine())
 					{
 						currLine = fileSc.nextLine();
@@ -34,19 +37,26 @@ public class IO_Handler
 							//System.out.println(currLine);
 							String[] nodeStr = currLine.split("\\s+");
 							System.out.println("From: " + nodeStr[0] + "\tTo: " + nodeStr[1]);
+							
 							// can store nodes and edges into graph data structure here after initialization
+					        g.addEdge(Integer.parseInt(nodeStr[0])-1,Integer.parseInt(nodeStr[1])-1);
 						}
 						else
 						{
 							if(currLine.contains("Nodes:"))
 							{
 								currLine = currLine.replaceAll("[^\\d]", " ").trim();
-								int numNodes = Integer.parseInt(currLine.split(" ")[0]);
+								String s[] = currLine.split("\\s+");
+								int numNodes = Integer.parseInt(s[0]);
+								int numEdges = Integer.parseInt(s[1]);
 								System.out.println("No. of nodes: " + numNodes);
+								System.out.println("No. of edges: " + numEdges);
 								// can initialize the graph data structure using numNodes here
+								g.init(numNodes);
 							}
 						}
 					}
+					g.printGraph();
 					break;
 				case HOSPITALS:
 					
