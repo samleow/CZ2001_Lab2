@@ -8,16 +8,16 @@ import entity.Graph;
 
 public class MainApplication
 {
-	public static int V = 60;
+	public static int V = 10;
 	public static String[] shortestPath = new String[V];
 	public static boolean[] hospital = new boolean[V];
 	
 	public static void main(String[] args)
 	{
-		hospital[25] = true;
-		hospital[50] = true;
-		Graph g = IO_Handler.extractFile("test.txt", FileType.GRAPH);
-		for(int i = 0; i < 50; i++)
+		hospital[5] = true;
+		//hospital[50] = true;
+		Graph g = IO_Handler.extractFile("smallTestGraph.txt", FileType.GRAPH);
+		for(int i = 0; i < 7; i++)
 		{
 			Iterator<Integer> j = g.list[i].listIterator();
 			if(shortestPath[i] == null && j.hasNext() && !hospital[i])
@@ -26,7 +26,7 @@ public class MainApplication
 			}
 		}
 		
-		for(int i = 0; i < 50; i++)
+		for(int i = 0; i < 7; i++)
 		{
 			System.out.println(shortestPath[i]);
 		}

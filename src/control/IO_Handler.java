@@ -41,7 +41,7 @@ public class IO_Handler
 							
 							// can store nodes and edges into graph data structure here after initialization
 					        g.addEdge(Integer.parseInt(nodeStr[0]),Integer.parseInt(nodeStr[1]));
-					        g.addEdge(Integer.parseInt(nodeStr[1]),Integer.parseInt(nodeStr[0]));
+					        //g.addEdge(Integer.parseInt(nodeStr[1]),Integer.parseInt(nodeStr[0]));
 						}
 						else
 						{
