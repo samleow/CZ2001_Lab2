@@ -9,62 +9,56 @@ import entity.Graph;
 public class MainApplication
 {
 	public static int V = 60;
-	public static String[] path = new String[V];
+	public static String[] shortestPath = new String[V];
 	public static boolean[] hospital = new boolean[V];
-	public static int J = 3;
 	
-	public static void main(String[] args) throws InterruptedException
+	public static void main(String[] args)
 	{
-		//IO_Handler.extractFile("smallTestGraph.txt", FileType.GRAPH);
 		hospital[25] = true;
 		hospital[50] = true;
 		Graph g = IO_Handler.extractFile("test.txt", FileType.GRAPH);
 		for(int i = 0; i < 50; i++)
 		{
 			Iterator<Integer> j = g.list[i].listIterator();
-			if(path[i] == null && j.hasNext())
+			if(shortestPath[i] == null && j.hasNext() && !hospital[i])
 			{
-				System.out.println(i);
 				BFS(i, g);
 			}
 		}
 		
 		for(int i = 0; i < 50; i++)
 		{
-			System.out.println(path[i]);
+			System.out.println(shortestPath[i]);
 		}
 	}
 
-    static void BFS(int start, Graph g) throws InterruptedException 
-    { 
-        // Mark all the vertices as not visited(By default 
-        // set as false) 
-    	int s = start;
+    static void BFS(int start, Graph g)
+    {
+    	int root = start;
         int n = -1;
         ArrayList<Integer> temp = new ArrayList<Integer>();
-        // Create a queue for BFS 
         LinkedList<Integer> queue = new LinkedList<Integer>();
         int[] parent = new int[V];
-        boolean visited[] = new boolean[V]; 
- 
-        // Mark the current node as visited and enqueue it 
-        visited[s]=true;
-        queue.add(s);
+        boolean visited[] = new boolean[V];
+        
+        
+        visited[root]=true;
+        queue.add(root);
 
         outerloop:
-        while(queue.size() != 0) 
+        while(queue.size() != 0)
         {
-            s = queue.poll(); 
-            Iterator<Integer> i = g.list[s].listIterator();
+            root = queue.poll(); 
+            Iterator<Integer> i = g.list[root].listIterator();
             while(i.hasNext()) 
             {
                 n = i.next();
-                
                 if(!visited[n]) 
                 { 
                     visited[n] = true;
-                    parent[n] = s;
-                    if(path[n] != null)
+                    parent[n] = root;
+                    
+                    if(shortestPath[n] != null)
                     	temp.add(n);
                     else
                         queue.add(n);
@@ -75,54 +69,53 @@ public class MainApplication
             }
         }
         
-        String[] string = new String[temp.size()+1];
-        string[temp.size()] = "";
+        String[] paths = new String[temp.size()+1];
+        int m = 0;
         
-        while(parent[n] != start)
+        if(hospital[n])
         {
-        	string[temp.size()] = n + "-" + string[temp.size()];
-        	n = parent[n];
+	        paths[temp.size()] = Integer.toString(n);
+	        while(parent[n] != start)
+	        {
+	        	n = parent[n];
+	        	paths[temp.size()] = n + "->" + paths[temp.size()];
+	        }
+	        paths[temp.size()] = start + "->" + paths[temp.size()];
+	        m++;
         }
-        string[temp.size()] = n + "-" + string[temp.size()];
-        string[temp.size()] = start + "-" + string[temp.size()];
-        //System.out.println(temp.size() + "\t" + string[temp.size()]);
         
         for(int i = 0; i < temp.size(); i++)
         {
-        	string[i] = path[temp.get(i)];
         	n = temp.get(i);
-        	//n = parent[n];
+        	paths[i] = shortestPath[n];
         	while(parent[n] != start)
         	{
-        		string[i] = n + "-" + string[i];
             	n = parent[n];
+        		paths[i] = n + "->" + paths[i];
         	}
-        	string[i] = n + "-" + string[i];
-            string[i] = start + "-" + string[i];
-            //System.out.println(i + "\t" + string[i]);
+            paths[i] = start + "->" + paths[i];
         }
         
         int shortestIndex = 0;
-        for(int i = 1; i<temp.size()+1; i++)
+        for(int i = 1; i<temp.size()+m; i++)
         {
-        	StringTokenizer tokens = new StringTokenizer(string[i]);
-        	StringTokenizer tokenShortest = new StringTokenizer(string[shortestIndex]);
+        	StringTokenizer tokens = new StringTokenizer(paths[i]);
+        	StringTokenizer tokenShortest = new StringTokenizer(paths[shortestIndex]);
         	if(tokens.countTokens() < tokenShortest.countTokens())
         	{
         		shortestIndex = i;
         	}
         }
         
-        String[] stringLength = string[shortestIndex].split("-");
+        String currentShortestPath = paths[shortestIndex];
+        String[] stringLength = currentShortestPath.split("->");
         
-        for(int i = 0; i < stringLength.length; i++)
+        for(int i = 0; i < stringLength.length-1; i++)
         {
-        	String[] stringSplit = string[shortestIndex].split("-", 2);
-        	path[Integer.parseInt(stringSplit[0])] = string[shortestIndex];
-        	System.out.println(start + "\t" + path[Integer.parseInt(stringSplit[0])]);
-        	string[shortestIndex] = stringSplit[1];
+        	String[] stringSplit = currentShortestPath.split("->", 2);
+        	if(shortestPath[Integer.parseInt(stringSplit[0])] == null)
+        		shortestPath[Integer.parseInt(stringSplit[0])] = currentShortestPath;
+        	currentShortestPath = stringSplit[1];
         }
-        //System.out.println(start + "\t" + string[shortestIndex]);
-        //path[start] = string[shortestIndex];
     } 
 }
