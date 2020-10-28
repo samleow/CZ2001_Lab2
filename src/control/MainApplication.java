@@ -7,26 +7,26 @@ import entity.Graph;
 
 public class MainApplication
 {
-	public static int V = 50;
+	public static int V = 5050;
 	public static String[] shortestPath = new String[V];
+	public static int[] distance = new int[V];
 	public static boolean[] hospital = new boolean[V];
 	
 	public static void main(String[] args)
 	{
-		hospital[20] = true;
-		//hospital[50] = true;
+		for(int i = 0; i < V; i += 50)
+			hospital[i] = true;
 		Graph g = IO_Handler.extractFile("test.txt", FileType.GRAPH);
 		for(int i = 0; i < V; i++)
 		{
+			System.out.println(i);
 			Iterator<Integer> j = g.list[i].listIterator();
-			if(shortestPath[i] == null && j.hasNext() && !hospital[i])
-			{
+			if(shortestPath[i] == null && j.hasNext())
 				BFS(i, g);
-			}
 		}
 		
 		for(int i = 0; i < V; i++)
-			System.out.println(shortestPath[i]);
+			System.out.println(distance[i] + "\t" + shortestPath[i]);
 	}
 
     static void BFS(int start, Graph g)
@@ -37,7 +37,6 @@ public class MainApplication
         LinkedList<Integer> queue = new LinkedList<Integer>();
         int[] parent = new int[V];
         boolean visited[] = new boolean[V];
-        
         
         visited[root]=true;
         queue.add(root);
@@ -60,7 +59,7 @@ public class MainApplication
                     else
                         queue.add(n);
                 }
-                	
+                
             	if(hospital[n])
                 	break outerloop;
             }
@@ -103,13 +102,18 @@ public class MainApplication
         }
         
         String currentShortestPath = paths[shortestIndex];
+        if(currentShortestPath == null)
+        	return;
         String[] stringLength = currentShortestPath.split("->");
         
         for(int i = 0; i < stringLength.length-1; i++)
         {
         	String[] stringSplit = currentShortestPath.split("->", 2);
         	if(shortestPath[Integer.parseInt(stringSplit[0])] == null)
+        	{
         		shortestPath[Integer.parseInt(stringSplit[0])] = currentShortestPath;
+        		distance[Integer.parseInt(stringSplit[0])] = currentShortestPath.split("->").length - 1;
+        	}
         	currentShortestPath = stringSplit[1];
         }
     } 
