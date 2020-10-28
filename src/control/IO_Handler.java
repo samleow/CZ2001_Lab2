@@ -15,19 +15,20 @@ enum FileType
 public class IO_Handler
 {
 	
-	public static void extractFile(String filename, FileType type)
+	public static Graph extractFile(String filename, FileType type)
 	{
 		String currLine = "";
 		
 		try
 		{
+			Graph g = new Graph(-1);
 			File file = new File(filename);
 			Scanner fileSc = new Scanner(file);
 			System.out.println("File being extracted ...");
 			switch(type)
 			{
 				case GRAPH:
-					Graph g = new Graph(-1);
+					
 					while(fileSc.hasNextLine())
 					{
 						currLine = fileSc.nextLine();
@@ -39,7 +40,7 @@ public class IO_Handler
 							System.out.println("From: " + nodeStr[0] + "\tTo: " + nodeStr[1]);
 							
 							// can store nodes and edges into graph data structure here after initialization
-					        g.addEdge(Integer.parseInt(nodeStr[0])-1,Integer.parseInt(nodeStr[1])-1);
+					        g.addEdge(Integer.parseInt(nodeStr[0]),Integer.parseInt(nodeStr[1]));
 						}
 						else
 						{
@@ -52,7 +53,7 @@ public class IO_Handler
 								System.out.println("No. of nodes: " + numNodes);
 								System.out.println("No. of edges: " + numEdges);
 								// can initialize the graph data structure using numNodes here
-								g.init(numNodes);
+								g.init(1500000);
 							}
 						}
 					}
@@ -68,11 +69,13 @@ public class IO_Handler
 			}
 			System.out.println("File successfully extracted!");
 			fileSc.close();
+			return g;
 		}
 		catch(FileNotFoundException e)
 		{
 			System.out.println("File not found!");
 		}
+		return null;
 	}
 	
 	public static void saveFile(String fileName)
