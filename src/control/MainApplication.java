@@ -2,22 +2,21 @@ package control;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 import entity.Graph;
 
 public class MainApplication
 {
-	public static int V = 10;
+	public static int V = 50;
 	public static String[] shortestPath = new String[V];
 	public static boolean[] hospital = new boolean[V];
 	
 	public static void main(String[] args)
 	{
-		hospital[5] = true;
+		hospital[20] = true;
 		//hospital[50] = true;
-		Graph g = IO_Handler.extractFile("smallTestGraph.txt", FileType.GRAPH);
-		for(int i = 0; i < 7; i++)
+		Graph g = IO_Handler.extractFile("test.txt", FileType.GRAPH);
+		for(int i = 0; i < V; i++)
 		{
 			Iterator<Integer> j = g.list[i].listIterator();
 			if(shortestPath[i] == null && j.hasNext() && !hospital[i])
@@ -26,10 +25,8 @@ public class MainApplication
 			}
 		}
 		
-		for(int i = 0; i < 7; i++)
-		{
+		for(int i = 0; i < V; i++)
 			System.out.println(shortestPath[i]);
-		}
 	}
 
     static void BFS(int start, Graph g)
@@ -97,14 +94,12 @@ public class MainApplication
         }
         
         int shortestIndex = 0;
-        for(int i = 1; i<temp.size()+m; i++)
+        for(int i = 0; i < temp.size()+m; i++)
         {
-        	StringTokenizer tokens = new StringTokenizer(paths[i]);
-        	StringTokenizer tokenShortest = new StringTokenizer(paths[shortestIndex]);
-        	if(tokens.countTokens() < tokenShortest.countTokens())
-        	{
+        	String[] compare = paths[i].split("->");
+        	String[] shortest = paths[shortestIndex].split("->");
+        	if(compare.length < shortest.length)
         		shortestIndex = i;
-        	}
         }
         
         String currentShortestPath = paths[shortestIndex];
