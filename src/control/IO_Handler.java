@@ -60,8 +60,22 @@ public class IO_Handler
 					g.printGraph();
 					break;
 				case HOSPITALS:
+					int numHospitals=0;
+					int[] hospitals = new int[1500000];
 					
 					// for the list of hospitals
+					while(fileSc.hasNextLine())
+					{
+						currLine = fileSc.nextLine();
+						if(currLine.charAt(0) != '#')
+							hospitals[Integer.parseInt(currLine)] = 1;
+						else
+						{
+							currLine = currLine.replaceAll("[^\\d]", " ").trim();
+							numHospitals = Integer.parseInt(currLine);
+							System.out.println("No. of hospitals: " + numHospitals);
+						}
+					}
 					
 					break;
 				default:

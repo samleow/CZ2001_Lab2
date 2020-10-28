@@ -13,6 +13,8 @@ public class MainApplication
 
 	public static void main(String[] args)
 	{
+		IO_Handler.extractFile("smallTestHospitals.txt", FileType.HOSPITALS);
+		
 		//IO_Handler.extractFile("smallTestGraph.txt", FileType.GRAPH);
 		Graph g = IO_Handler.extractFile("smallTestGraph.txt", FileType.GRAPH);
 		BFS(2, g);
