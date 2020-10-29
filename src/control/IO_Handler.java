@@ -57,7 +57,7 @@ public class IO_Handler
 								System.out.println("No. of nodes: " + numNodes);
 								System.out.println("No. of edges: " + numEdges);
 								// can initialize the graph data structure using numNodes here
-								g.init(MainApplication.V);
+								g.init((int) (numNodes * 1.1));
 							}
 						}
 					}
