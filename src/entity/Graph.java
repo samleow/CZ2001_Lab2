@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class Graph
 {
-	int vertex;
+	public int vertex;
 	public LinkedList<Integer> list[];
 
 	public Graph(int vertex)
