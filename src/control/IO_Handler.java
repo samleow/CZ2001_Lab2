@@ -111,7 +111,7 @@ public class IO_Handler
 				fileWriter = new FileWriter(fileName);
 			}
 			// save graph/outputs into txt file here
-			fileWriter.write(line+"\n");
+			fileWriter.write(line);
 			fileWriter.close();
 			return true;
 		}
