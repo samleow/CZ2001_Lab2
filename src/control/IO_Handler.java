@@ -61,7 +61,6 @@ public class IO_Handler
 							}
 						}
 					}
-					//g.printGraph();
 					break;
 				case HOSPITALS:
 					int numHospitals=0;
@@ -120,6 +119,27 @@ public class IO_Handler
 			System.out.println("File writing got error!");
 		}
 		
+		return false;
+	}
+	
+	public static boolean hospitalGenerator(String fileName, int numHospitals, int interval)
+	{
+		try
+		{
+			FileWriter fileWriter;
+			fileWriter = new FileWriter(fileName);
+
+			fileWriter.write("# "+numHospitals+"\n");
+			for(int i = 0; i < MainApplication.V; i += interval)
+				fileWriter.write(i+"\n");
+			
+			fileWriter.close();
+			return true;
+		}
+		catch (IOException e)
+		{
+			System.out.println("File writing got error!");
+		}
 		return false;
 	}
 	
