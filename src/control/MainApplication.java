@@ -13,7 +13,6 @@ public class MainApplication
 	public static int[][] distance;
 	public static boolean[] hospital;
 	public static long TIMETAKEN = 0;
-
 	public static final String SPLITTER = "->";
 	
 	public static void main(String[] args) throws IOException
@@ -76,7 +75,69 @@ public class MainApplication
 		IO_Handler.saveFile(filename,"Execution Time: " + TIMETAKEN + " ns");
 		sc.close();
 	}
+    
+    public static void BFSN(int start, Graph g, int k)
+    {
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+        Integer[] hospitalTemp = new Integer[hospitalNum];
+        boolean visited[] = new boolean[V];
+        int[] parent = new int[V];
+    	int source = start;
+        int n = -1;
+        int j = 0;
+        
+        visited[source]=true;
+        queue.add(source);
 
+        long startTime = System.nanoTime();
+        outerloop:
+        while(queue.size() != 0)
+        {
+            source = queue.poll(); 
+            Iterator<Integer> i = g.list[source].listIterator();
+            while(i.hasNext()) 
+            {
+                n = i.next();
+                if(!visited[n]) 
+                {
+                    visited[n] = true;
+                    parent[n] = source;
+                    queue.add(n);
+                    
+                    if(hospital[n])
+                		hospitalTemp[j] = n;
+                }
+            }
+        }
+        long stopTime = System.nanoTime();
+        TIMETAKEN += stopTime - startTime;
+        
+        String[] paths = new String[k];
+        for(int i = 0; i < k; i++)
+        {
+        	if(hospitalTemp[i] != null)
+        	{
+	        	n = hospitalTemp[i]; 
+	        	paths[i] = Integer.toString(n);
+	        	while(parent[n] != start)
+		        {
+		        	n = parent[n];
+		        	paths[i] = n + SPLITTER + paths[i];
+		        }
+		        paths[i] = start + SPLITTER + paths[i];
+        	}
+        }
+        
+        for(int i = 0; i < k; i++)
+        {
+        	if(paths[i] != null)
+        	{
+    	        shortestPath[i][start] = paths[i];
+    	        distance[i][start] = paths[i].split(SPLITTER).length - 1;
+        	}
+        }
+    }
+    
     public static void BFSK(int start, Graph g, int k)
     {
         LinkedList<Integer> queue = new LinkedList<Integer>();
@@ -111,68 +172,6 @@ public class MainApplication
                 		if(++j == k)
                 			break outerloop;
                 	}
-                }
-            }
-        }
-        long stopTime = System.nanoTime();
-        TIMETAKEN += stopTime - startTime;
-        
-        String[] paths = new String[k];
-        for(int i = 0; i < k; i++)
-        {
-        	if(hospitalTemp[i] != null)
-        	{
-	        	n = hospitalTemp[i]; 
-	        	paths[i] = Integer.toString(n);
-	        	while(parent[n] != start)
-		        {
-		        	n = parent[n];
-		        	paths[i] = n + SPLITTER + paths[i];
-		        }
-		        paths[i] = start + SPLITTER + paths[i];
-        	}
-        }
-        
-        for(int i = 0; i < k; i++)
-        {
-        	if(paths[i] != null)
-        	{
-    	        shortestPath[i][start] = paths[i];
-    	        distance[i][start] = paths[i].split(SPLITTER).length - 1;
-        	}
-        }
-    }
-    
-    public static void BFSN(int start, Graph g, int k)
-    {
-        LinkedList<Integer> queue = new LinkedList<Integer>();
-        Integer[] hospitalTemp = new Integer[hospitalNum];
-        boolean visited[] = new boolean[V];
-        int[] parent = new int[V];
-    	int source = start;
-        int n = -1;
-        int j = 0;
-        
-        visited[source]=true;
-        queue.add(source);
-
-        long startTime = System.nanoTime();
-        outerloop:
-        while(queue.size() != 0)
-        {
-            source = queue.poll(); 
-            Iterator<Integer> i = g.list[source].listIterator();
-            while(i.hasNext()) 
-            {
-                n = i.next();
-                if(!visited[n]) 
-                {
-                    visited[n] = true;
-                    parent[n] = source;
-                    queue.add(n);
-                    
-                    if(hospital[n])
-                		hospitalTemp[j] = n;
                 }
             }
         }
