@@ -44,8 +44,6 @@ public class MainApplication
 		for(int i = 0; i < V; i += 10)
 			hospital[i] = true;
 		
-		
-		
 		if(k > 1)
 			for(int i = 0; i < V; i++)
 			{
@@ -58,7 +56,7 @@ public class MainApplication
 			{
 				System.out.println(i);
 				if(shortestPath[0][i] == null && !hospital[i])
-					BFS(i, g);
+					BFS1(i, g);
 			}
 		
 		for(int i = 0; i < V; i++)
@@ -92,7 +90,7 @@ public class MainApplication
         visited[source]=true;
         queue.add(source);
 
-        
+        long startTime = System.nanoTime();
         outerloop:
         while(queue.size() != 0)
         {
@@ -116,6 +114,70 @@ public class MainApplication
                 }
             }
         }
+        long stopTime = System.nanoTime();
+        TIMETAKEN += stopTime - startTime;
+        
+        String[] paths = new String[k];
+        for(int i = 0; i < k; i++)
+        {
+        	if(hospitalTemp[i] != null)
+        	{
+	        	n = hospitalTemp[i]; 
+	        	paths[i] = Integer.toString(n);
+	        	while(parent[n] != start)
+		        {
+		        	n = parent[n];
+		        	paths[i] = n + SPLITTER + paths[i];
+		        }
+		        paths[i] = start + SPLITTER + paths[i];
+        	}
+        }
+        
+        for(int i = 0; i < k; i++)
+        {
+        	if(paths[i] != null)
+        	{
+    	        shortestPath[i][start] = paths[i];
+    	        distance[i][start] = paths[i].split(SPLITTER).length - 1;
+        	}
+        }
+    }
+    
+    public static void BFSN(int start, Graph g, int k)
+    {
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+        Integer[] hospitalTemp = new Integer[hospitalNum];
+        boolean visited[] = new boolean[V];
+        int[] parent = new int[V];
+    	int source = start;
+        int n = -1;
+        int j = 0;
+        
+        visited[source]=true;
+        queue.add(source);
+
+        long startTime = System.nanoTime();
+        outerloop:
+        while(queue.size() != 0)
+        {
+            source = queue.poll(); 
+            Iterator<Integer> i = g.list[source].listIterator();
+            while(i.hasNext()) 
+            {
+                n = i.next();
+                if(!visited[n]) 
+                {
+                    visited[n] = true;
+                    parent[n] = source;
+                    queue.add(n);
+                    
+                    if(hospital[n])
+                		hospitalTemp[j] = n;
+                }
+            }
+        }
+        long stopTime = System.nanoTime();
+        TIMETAKEN += stopTime - startTime;
         
         String[] paths = new String[k];
         for(int i = 0; i < k; i++)
@@ -143,7 +205,7 @@ public class MainApplication
         }
     }
 
-    static void BFS(int start, Graph g)
+    static void BFS1(int start, Graph g)
     {
     	ArrayList<Integer> temp = new ArrayList<Integer>();
     	LinkedList<Integer> queue = new LinkedList<Integer>();
@@ -173,11 +235,15 @@ public class MainApplication
                     	temp.add(n);
                     else
                         queue.add(n);
+                    
+                    if(hospital[n])
+                    	break outerloop;
                 }
-            	if(hospital[n])
-                	break outerloop;
+            	
             }
         }
+        long stopTime = System.nanoTime();
+        TIMETAKEN += stopTime - startTime;
         
         if(n < 0)
         	return;
@@ -218,8 +284,6 @@ public class MainApplication
         		shortestIndex = i;
         }
         String currentShortestPath = paths[shortestIndex];
-        long stopTime = System.nanoTime();
-        TIMETAKEN += startTime - stopTime;
         
         AddPaths(currentShortestPath);
        
