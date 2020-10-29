@@ -2,6 +2,8 @@ package control;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 import entity.Graph;
@@ -14,6 +16,7 @@ enum FileType
 
 public class IO_Handler
 {
+	static ArrayList<String> _clearedFile = new ArrayList<String>();
 	
 	public static Graph extractFile(String filename, FileType type)
 	{
@@ -93,9 +96,31 @@ public class IO_Handler
 		return null;
 	}
 	
-	public static void saveFile(String fileName)
+	// returns true on success
+	public static boolean saveFile(String fileName, String line)
 	{
-		// save graph/outputs into txt file here
+		
+		try
+		{
+			FileWriter fileWriter;
+			if(_clearedFile.contains(fileName))
+				fileWriter = new FileWriter(fileName, true);
+			else
+			{
+				_clearedFile.add(fileName);
+				fileWriter = new FileWriter(fileName);
+			}
+			// save graph/outputs into txt file here
+			fileWriter.write(line+"\n");
+			fileWriter.close();
+			return true;
+		}
+		catch (IOException e)
+		{
+			System.out.println("File writing got error!");
+		}
+		
+		return false;
 	}
 	
 }

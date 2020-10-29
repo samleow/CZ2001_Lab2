@@ -15,11 +15,8 @@ public class MainApplication
 	public static int[] distance = new int[V];
 	public static boolean[] hospital = new boolean[V];
 	
-	public static void main(String[] args) throws IOException {
-		// create file
-		FileWriter fileWriter = new FileWriter("output.txt");
-		String newLine = System.getProperty("line.separator");
-
+	public static void main(String[] args)
+	{
 		for(int i = 0; i < V; i += 50)
 			hospital[i] = true;
 		Graph g = IO_Handler.extractFile("test.txt", FileType.GRAPH);
@@ -33,10 +30,9 @@ public class MainApplication
 		
 		for(int i = 0; i < V; i++) {
 			System.out.println(distance[i] + "\t" + shortestPath[i]);
-			fileWriter.write(distance[i] + "\t" + shortestPath[i] + newLine);
+			// saving to file
+			IO_Handler.saveFile("output.txt", distance[i] + "\t" + shortestPath[i]);
 		}
-		// close file
-		fileWriter.close();
 	}
 
     static void BFS(int start, Graph g)
