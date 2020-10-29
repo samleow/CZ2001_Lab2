@@ -12,24 +12,25 @@ public class MainApplication
 	public static String[][] shortestPath;
 	public static int[][] distance;
 	public static boolean[] hospital;
+	public static long TIMETAKEN = 0;
 
 	public static final String SPLITTER = "->";
 	
 	public static void main(String[] args) throws IOException
 	{
 		Scanner sc = new Scanner(System.in);
-		System.out.printf("Input filename: ");
+		System.out.print("Input filename: ");
 		String filename = sc.nextLine();
 		
 		Graph g = IO_Handler.extractFile(filename, FileType.GRAPH);
 		
-		System.out.printf("Output filename: ");
+		System.out.print("Output filename: ");
 		filename = sc.nextLine();
 
-		System.out.printf("Input K: ");
+		System.out.print("Input K: ");
 		int k = sc.nextInt();
 		
-		V = g.vertex;
+		V = IO_Handler.maxNode + 1;
 		hospital = new boolean[V];
 		distance = new int[k][];
 		shortestPath = new String[k][];
@@ -40,8 +41,10 @@ public class MainApplication
 			distance[i] = new int[V];
 		}
 		
-		for(int i = 0; i < V; i += 50)
+		for(int i = 0; i < V; i += 10)
 			hospital[i] = true;
+		
+		
 		
 		if(k > 1)
 			for(int i = 0; i < V; i++)
@@ -60,15 +63,19 @@ public class MainApplication
 		
 		for(int i = 0; i < V; i++)
 		{
+			System.out.println(i);
+			System.out.printf(String.format("NODE %s\n", i));
+			IO_Handler.saveFile(filename, String.format("NODE %s\n", i));
 			for(int j = 0; j < k; j++)
 			{
-				System.out.printf(String.format("%-2s:%-30s\t", distance[j][i], shortestPath[j][i]));
-				IO_Handler.saveFile(filename, String.format("%-2s:%-30s\t", distance[j][i], shortestPath[j][i]));
+				System.out.printf(String.format("%-3s:%-150s\n", distance[j][i], shortestPath[j][i]));
+				IO_Handler.saveFile(filename, String.format("%-3s:%-150s\n", distance[j][i], shortestPath[j][i]));
 			}
 			System.out.println("");
-			IO_Handler.saveFile(filename, "\n");
+			IO_Handler.saveFile(filename,"\n");
 		}
-		
+		System.out.println("Execution Time: " + TIMETAKEN + " ns");
+		IO_Handler.saveFile(filename,"Execution Time: " + TIMETAKEN + " ns");
 		sc.close();
 	}
 
@@ -85,6 +92,7 @@ public class MainApplication
         visited[source]=true;
         queue.add(source);
 
+        
         outerloop:
         while(queue.size() != 0)
         {
@@ -146,7 +154,8 @@ public class MainApplication
         
         visited[source]=true;
         queue.add(source);
-
+        
+        long startTime = System.nanoTime();
         outerloop:
         while(queue.size() != 0)
         {
@@ -165,7 +174,6 @@ public class MainApplication
                     else
                         queue.add(n);
                 }
-                
             	if(hospital[n])
                 	break outerloop;
             }
@@ -209,15 +217,16 @@ public class MainApplication
         	if(compare.length < shortest.length)
         		shortestIndex = i;
         }
-        
         String currentShortestPath = paths[shortestIndex];
+        long stopTime = System.nanoTime();
+        TIMETAKEN += startTime - stopTime;
+        
         AddPaths(currentShortestPath);
        
     } 
     
     public static void AddPaths(String currentShortestPath)
     {
-    	
     	if(currentShortestPath == null)
         	return;
         

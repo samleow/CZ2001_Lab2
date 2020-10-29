@@ -17,6 +17,7 @@ enum FileType
 public class IO_Handler
 {
 	static ArrayList<String> _clearedFile = new ArrayList<String>();
+	public static int maxNode;
 	
 	public static Graph extractFile(String filename, FileType type)
 	{
@@ -37,14 +38,17 @@ public class IO_Handler
 						currLine = fileSc.nextLine();
 						if(currLine.charAt(0) != '#')
 						{
-							// plot graph
 							//System.out.println(currLine);
 							String[] nodeStr = currLine.split("\\s+");
 							//System.out.println("From: " + nodeStr[0] + "\tTo: " + nodeStr[1]);
-							
 							// can store nodes and edges into graph data structure here after initialization
 					        g.addEdge(Integer.parseInt(nodeStr[0]),Integer.parseInt(nodeStr[1]));
 					        g.addEdge(Integer.parseInt(nodeStr[1]),Integer.parseInt(nodeStr[0]));
+					        
+					        if(Integer.parseInt(nodeStr[0]) > maxNode)
+					        	maxNode = Integer.parseInt(nodeStr[0]);
+					        if(Integer.parseInt(nodeStr[1]) > maxNode)
+					        	maxNode = Integer.parseInt(nodeStr[1]);
 						}
 						else
 						{
