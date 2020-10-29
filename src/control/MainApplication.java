@@ -22,6 +22,9 @@ public class MainApplication
 		String filename = sc.nextLine();
 		
 		Graph g = IO_Handler.extractFile(filename, FileType.GRAPH);
+		
+		System.out.printf("Output filename: ");
+		filename = sc.nextLine();
 
 		System.out.printf("Input K: ");
 		int k = sc.nextInt();
@@ -60,10 +63,10 @@ public class MainApplication
 			for(int j = 0; j < k; j++)
 			{
 				System.out.printf(String.format("%-2s:%-30s\t", distance[j][i], shortestPath[j][i]));
-				IO_Handler.saveFile("OUTPUT" + filename, String.format("%-2s:%-30s\t", distance[j][i], shortestPath[j][i]));
+				IO_Handler.saveFile(filename, String.format("%-2s:%-30s\t", distance[j][i], shortestPath[j][i]));
 			}
 			System.out.println("");
-			IO_Handler.saveFile("OUTPUT" + filename, "\n");
+			IO_Handler.saveFile(filename, "\n");
 		}
 		
 		sc.close();
