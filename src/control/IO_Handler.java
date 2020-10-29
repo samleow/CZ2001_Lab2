@@ -68,14 +68,15 @@ public class IO_Handler
 					break;
 				case HOSPITALS:
 					int numHospitals=0;
-					int[] hospitals = new int[1500000];
+					//int[] hospitals = new int[1500000];
 					
 					// for the list of hospitals
 					while(fileSc.hasNextLine())
 					{
 						currLine = fileSc.nextLine();
 						if(currLine.charAt(0) != '#')
-							hospitals[Integer.parseInt(currLine)] = 1;
+							//hospitals[Integer.parseInt(currLine)] = 1;
+							MainApplication.hospital[Integer.parseInt(currLine)] = true;
 						else
 						{
 							currLine = currLine.replaceAll("[^\\d]", " ").trim();
