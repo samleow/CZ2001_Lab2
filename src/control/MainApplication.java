@@ -1,9 +1,12 @@
 package control;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import entity.Graph;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class MainApplication
 {
@@ -12,8 +15,11 @@ public class MainApplication
 	public static int[] distance = new int[V];
 	public static boolean[] hospital = new boolean[V];
 	
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) throws IOException {
+		// create file
+		FileWriter fileWriter = new FileWriter("output.txt");
+		String newLine = System.getProperty("line.separator");
+
 		for(int i = 0; i < V; i += 50)
 			hospital[i] = true;
 		Graph g = IO_Handler.extractFile("test.txt", FileType.GRAPH);
@@ -25,8 +31,12 @@ public class MainApplication
 				BFS(i, g);
 		}
 		
-		for(int i = 0; i < V; i++)
+		for(int i = 0; i < V; i++) {
 			System.out.println(distance[i] + "\t" + shortestPath[i]);
+			fileWriter.write(distance[i] + "\t" + shortestPath[i] + newLine);
+		}
+		// close file
+		fileWriter.close();
 	}
 
     static void BFS(int start, Graph g)
