@@ -58,8 +58,8 @@ public class IO_Handler
 								String s[] = currLine.split("\\s+");
 								int numNodes = Integer.parseInt(s[0]);
 								int numEdges = Integer.parseInt(s[1]);
-								System.out.println("No. of nodes: " + numNodes);
-								System.out.println("No. of edges: " + numEdges);
+								System.out.printf("No. of nodes: %d\t", numNodes);
+								System.out.printf("No. of edges: %d\n", numEdges);
 								// can initialize the graph data structure using numNodes here
 								g.init((int) (numNodes * 1.1));
 							}
@@ -135,7 +135,7 @@ public class IO_Handler
 			fileWriter = new FileWriter(fileName);
 
 			fileWriter.write("# "+numHospitals+"\n");
-			for(int i = 0; i < MainApplication.V; i += interval)
+			for(int i = 0; i < MainApplication.maxNode; i += interval)
 				fileWriter.write(i+"\n");
 			
 			fileWriter.close();
