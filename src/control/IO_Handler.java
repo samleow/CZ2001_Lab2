@@ -67,21 +67,24 @@ public class IO_Handler
 					}
 					break;
 				case HOSPITALS:
-					int numHospitals=0;
-					//int[] hospitals = new int[1500000];
-					
+					int i = 0;
 					// for the list of hospitals
 					while(fileSc.hasNextLine())
 					{
 						currLine = fileSc.nextLine();
 						if(currLine.charAt(0) != '#')
-							//hospitals[Integer.parseInt(currLine)] = 1;
+						{
 							MainApplication.hospital[Integer.parseInt(currLine)] = true;
+							MainApplication.hospitalList[i]=Integer.parseInt(currLine);
+							i++;
+						}
 						else
 						{
 							currLine = currLine.replaceAll("[^\\d]", " ").trim();
-							numHospitals = Integer.parseInt(currLine);
-							System.out.println("No. of hospitals: " + numHospitals);
+							MainApplication.numHospital = Integer.parseInt(currLine);
+							MainApplication.hospital = new boolean[maxNode+1];
+							MainApplication.hospitalList = new int[MainApplication.numHospital + 1];
+							System.out.println("No. of hospitals: " + MainApplication.numHospital);
 						}
 					}
 					

@@ -22,25 +22,26 @@ public class MainApplication
 	{
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.print("Input filename: ");
+		System.out.print("Input graph filename: ");
 		String filenameIn = sc.nextLine();
-		System.out.print("Output filename: ");
+		System.out.print("Input hospitals filename: ");
+		String hospitalIn = sc.nextLine();
+		System.out.print("Output results filename: ");
 		String filenameOut = sc.nextLine();
 		Graph g = IO_Handler.extractFile(filenameIn, FileType.GRAPH);
 		
 		maxNode = IO_Handler.maxNode + 1;
-		hospital = new boolean[maxNode];
-		
-		numHospital = 5;
-		hospitalList = new int[numHospital + 1];
-		hospitalList[0] = 0;
-		for(int i = 1; i <= numHospital; i ++)
-		{
-			hospitalList[i] = i*(maxNode/numHospital);
-			System.out.println(i*(maxNode/numHospital));
-		}
-		for(int i = 0; i < numHospital + 1; i++)
-			hospital[hospitalList[i]] = true;
+		IO_Handler.extractFile(hospitalIn, FileType.HOSPITALS);
+//		hospital = new boolean[maxNode];
+//		numHospital = -1;
+//		hospitalList = new int[numHospital + 1];
+//		for(int i = 1; i <= numHospital; i ++)
+//		{
+//			hospitalList[i] = i*(maxNode/numHospital);
+//			System.out.println(i*(maxNode/numHospital));
+//		}
+//		for(int i = 0; i < numHospital + 1; i++)
+//			hospital[hospitalList[i]] = true;
 
 		System.out.println("1.BFS Modified(k = 1)");
 		System.out.println("2.BFS Multi-Source(k = 1)");
