@@ -42,8 +42,11 @@ public class IO_Handler
 							String[] nodeStr = currLine.split("\\s+");
 							//System.out.println("From: " + nodeStr[0] + "\tTo: " + nodeStr[1]);
 							// can store nodes and edges into graph data structure here after initialization
-					        g.addEdge(Integer.parseInt(nodeStr[0]),Integer.parseInt(nodeStr[1]));
-					        g.addEdge(Integer.parseInt(nodeStr[1]),Integer.parseInt(nodeStr[0]));
+					        if(!g.list[Integer.parseInt(nodeStr[0])].contains(Integer.parseInt(nodeStr[1])))
+					        {
+					        	g.addEdge(Integer.parseInt(nodeStr[0]),Integer.parseInt(nodeStr[1]));
+					        	g.addEdge(Integer.parseInt(nodeStr[1]),Integer.parseInt(nodeStr[0]));
+					        }
 					        
 					        if(Integer.parseInt(nodeStr[0]) > maxNode)
 					        	maxNode = Integer.parseInt(nodeStr[0]);
